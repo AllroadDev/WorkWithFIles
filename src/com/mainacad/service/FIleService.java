@@ -1,6 +1,7 @@
 package com.mainacad.service;
 
 import java.io.*;
+import java.nio.file.Files;
 
 public class FIleService {
 
@@ -57,6 +58,34 @@ public class FIleService {
 
         return out;
 
+    }
+
+    public static void writeBytesToFile(byte[] bytes, String fileName) {
+        checkTargetDir();
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILES_DIR + SEP + fileName)) {
+            fileOutputStream.write(bytes);
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static byte[] getBytesFromFile(String fileName) {
+        File file = new File(FILES_DIR + SEP + fileName);
+        try {
+
+            byte[] bytes = Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+
+    }
+    public static void copyFile(String sourceName, String targetName) {
+        byte[] bytes = getBytesFromFile(sourceName);
+        writeBytesToFile(bytes, targetName);
     }
 
 }
